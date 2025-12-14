@@ -3,4 +3,154 @@ title: "Statistical Model"
 description: "Quantitative modeling to estimate outcome likelihood."
 ---
 
-Quantitative modeling to estimate outcome likelihood. Polystrat analyzes price targets using multiple statistical approaches and historical behavior to generate model-based probabilities. These probabilities are designed to support better decisions, not predictions — giving you a clearer sense of risk before you commit capital.
+Polystrat analyzes crypto price targets using multiple statistical approaches and historical behavior to generate model-based probabilities. These probabilities are designed to support better decisions, giving you a clearer sense of risk before you commit capital.
+
+# Probability Engine Overview
+
+This endpoint estimates the likelihood of a crypto asset (e.g. BTC) reaching a given price level within a defined time horizon.
+
+It is designed for probabilistic decision support, not deterministic prediction.
+
+<Info>
+  The engine aggregates multiple independent probabilistic perspectives into a single bounded estimate, with explicit confidence signals.
+</Info>
+
+## High-level Architecture
+
+The system follows an ensemble-based approach. Instead of relying on a single statistical assumption, it combines several complementary probability engines, each modeling a different market behavior.
+
+The final probability reflects both the estimate itself and the degree of agreement between models.
+
+## Model Families
+
+||accordion-group||
+
+<AccordionGroup>
+  <Accordion title="Diffusion Model">
+    A continuous-price model assuming multiplicative returns and volatility scaling with time.
+
+    Used primarily as a neutral baseline under stable market conditions, especially for short horizons and near-the-money targets.
+  </Accordion>
+  <Accordion title="Heavy-Tail Distribution Model">
+    Extends the baseline assumption to capture non-normal return behavior common in crypto markets.
+
+    This model adapts to recent return shape and explicitly accounts for fat tails and downside asymmetry.
+  </Accordion>
+  <Accordion title="Stochastic Path Simulation">
+    Simulates a large number of potential future price paths instead of relying on a single closed-form distribution.
+
+    Captures path dependency, volatility clustering, and discrete shock events such as liquidations or news-driven moves.
+  </Accordion>
+  <Accordion title="Empirical Historical Model">
+    A non-parametric reference built directly from observed historical outcomes.
+
+    Measures how often similar market conditions historically reached comparable price targets over matching time horizons.
+  </Accordion>
+</AccordionGroup>
+
+## Volatility Regime Detection
+
+Before aggregation, the engine classifies the current market into a volatility regime.
+
+| Regime | Description                     | Effect                                |
+| :----- | :------------------------------ | :------------------------------------ |
+| Low    | Compressed volatility           | Tighter estimates, higher confidence  |
+| Normal | Typical market conditions       | Standard behavior                     |
+| High   | Elevated or stressed volatility | Wider uncertainty, confidence penalty |
+|        | endtable                        |                                       |
+
+<Warning>
+  High volatility regimes explicitly reduce confidence, even when raw probabilities appear attractive.
+</Warning>
+
+## Ensemble Aggregation
+
+All model outputs are combined into a single probability estimate.
+
+Core principles:
+
+- No single model dominates across all regimes
+- Model disagreement increases uncertainty
+- Model alignment tightens confidence intervals
+
+The aggregation step produces both a probability and a model-consensus signal.
+
+---
+
+## Contextual Adjustments
+
+After aggregation, the estimate is adjusted using market context signals.
+
+These adjustments account for:
+
+- Market positioning and sentiment imbalance
+- Distance between spot price and target
+- Time remaining to expiry
+
+<Note>
+  Adjustments are intentionally conservative and designed to dampen crowd-driven overconfidence.
+</Note>
+
+---
+
+## Probability Bounding
+
+The engine never outputs absolute certainty.
+
+Probability bounds are applied based on:
+
+- Target distance (moneyness)
+- Time horizon
+- Detected volatility regime
+
+This ensures outputs remain probabilistic rather than declarative.
+
+---
+
+## Output Structure
+
+<ResponseField name="probability" type="Final bounded probability estimate (0–1)">
+  Represents the final adjusted probability after ensemble aggregation, contextual adjustments, and bounding.
+</ResponseField>
+
+<ResponseField name="confidence_interval" type="Lower and upper bounds derived from model dispersion">
+  Indicates the uncertainty range implied by disagreement between internal models.
+</ResponseField>
+
+<ResponseField name="confidence_score" type="Model agreement score indicating estimate reliability">
+  Measures how closely aligned the internal models are with each other. This reflects consensus, not predictive certainty.
+</ResponseField>
+
+<ResponseField name="model_breakdown" type="Abstracted per-model contribution summary">
+  Provides a high-level summary of how different probabilistic engines contributed to the final estimate, without exposing internal mechanics.
+</ResponseField>
+
+<ResponseField name="recommendation" type="Human-readable probability classification">
+  A categorical label derived from the probability range, intended for fast scanning and UI display.
+</ResponseField>
+
+---
+
+## Recommendation Labels
+
+| Probability Range | Label      |
+| :---------------- | :--------- |
+| High              | LIKELY YES |
+| Medium-High       | LEAN YES   |
+| Neutral           | TOSS-UP    |
+| Medium-Low        | LEAN NO    |
+| Low               | LIKELY NO  |
+
+---
+
+## Intended Use
+
+This system is optimized for:
+
+- Scenario comparison
+- Risk-weighted decision making
+- Probabilistic hedging logic
+
+<Danger>
+  This engine is not a price oracle, trading signal, or guarantee of outcome.
+</Danger>
