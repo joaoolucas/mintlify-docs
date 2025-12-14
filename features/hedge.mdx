@@ -3,7 +3,7 @@ title: "Hedge any market"
 description: "We optimize your entry by hedging across outcomes."
 ---
 
-Instead of committing everything to one side, Polystrat splits and distributes your position to reduce downside and improve overall coverage. One entry, structured exposure, less dependency on a single outcome.
+Instead of committing everything to one side, Polystrat structures your entry across multiple outcomes, reducing dependency on a single result. On crypto markets, statistical models are applied to suggest the most likely outcomes and guide smarter positioning.
 
 | Feature            | Description                                                                  |
 | ------------------ | ---------------------------------------------------------------------------- |
@@ -16,20 +16,16 @@ Instead of committing everything to one side, Polystrat splits and distributes y
 | Profit Range       | Displays the potential profit range for the current setup.                   |
 | Place Order        | Submits all orders based on your configuration.                              |
 
-## BTC/ETH Markets
+## How Polystrat Works
 
-By predicting BTC and ETH markets, you can choose to
-
-## Other Markets
-
-On non-crypto prediction markets, Polystrat helps you improve your odds by splitting entries across multiple outcomes. Instead of relying on a single result, you increase coverage and turn uncertainty into structured positioning.
-
-![image.png](/images/image.png)
+You choose the outcomes, set the budget, and Polystrat handles the math, shows your upside, and executes everything in one click. On BTC and ETH markets, an optional [Statistical Model](https://polystrat.mintlify.app/features/model) surfaces high-probability outcomes, giving you an extra edge.
 
 <Steps>
   <Step title="Find your market">
     Go to [Polymarket ](https://polymarket.com/)and open any prediction market.\
     Once the page loads, Polystrat’s modal will appear in the top-right corner.
+
+    ![Othermarkets Pn](/images/othermarkets.png)
 
     <Info>
       Can’t see it? Make sure the extension is installed and you’ve completed the [Quickstart](https://polystrat.mintlify.app/quickstart) setup.
@@ -42,9 +38,26 @@ On non-crypto prediction markets, Polystrat helps you improve your odds by split
   <Step title="Adding outcomes">
     Click `“+ Add outcome”` in the top-right of the modal, or use the `“+”` icon next to an outcome’s probability.
 
+    <img
+      src="/images/markets3.png"
+      alt="Markets3 Pn"
+      title="Markets3 Pn"
+      className="mx-auto"
+      style={{ width:"52%" }}
+    />
+
     <Check>
       Add as many outcomes as needed to increase coverage and improve your odds.
     </Check>
+    When trading BTC/ETH markets, you can use "Find best outcomes" to get model-based outcome suggestions.
+
+    <img
+      src="/images/download.png"
+      alt="download.png"
+      title="download.png"
+      className="mx-auto"
+      style={{ width:"51%" }}
+    />
   </Step>
   <Step title="Review your allocation">
     Review how your capital is distributed, including probabilities and exposure per outcome, before committing.
