@@ -9,29 +9,19 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart"
-            ]
-          }
+        "group": "Getting started",
+        "pages": [
+          "index",
+          "quickstart"
         ]
       },
       {
-        "tab": "Features",
-        "groups": [
-          {
-            "group": "Features",
-            "pages": [
-              "/features/hedge/",
-              "/features/model/"
-            ]
-          }
+        "group": "Features",
+        "pages": [
+          "features/hedge",
+          "features/model"
         ]
       }
     ]
