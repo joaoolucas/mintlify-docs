@@ -21,33 +21,6 @@ The system follows an ensemble-based approach. Instead of relying on a single st
 
 The final probability reflects both the estimate itself and the degree of agreement between models.
 
-## Model Families
-
-||accordion-group||
-
-<AccordionGroup>
-  <Accordion title="Diffusion Model">
-    A continuous-price model assuming multiplicative returns and volatility scaling with time.
-
-    Used primarily as a neutral baseline under stable market conditions, especially for short horizons and near-the-money targets.
-  </Accordion>
-  <Accordion title="Heavy-Tail Distribution Model">
-    Extends the baseline assumption to capture non-normal return behavior common in crypto markets.
-
-    This model adapts to recent return shape and explicitly accounts for fat tails and downside asymmetry.
-  </Accordion>
-  <Accordion title="Stochastic Path Simulation">
-    Simulates a large number of potential future price paths instead of relying on a single closed-form distribution.
-
-    Captures path dependency, volatility clustering, and discrete shock events such as liquidations or news-driven moves.
-  </Accordion>
-  <Accordion title="Empirical Historical Model">
-    A non-parametric reference built directly from observed historical outcomes.
-
-    Measures how often similar market conditions historically reached comparable price targets over matching time horizons.
-  </Accordion>
-</AccordionGroup>
-
 ## Volatility Regime Detection
 
 Before aggregation, the engine classifies the current market into a volatility regime.
@@ -57,7 +30,6 @@ Before aggregation, the engine classifies the current market into a volatility r
 | Low    | Compressed volatility           | Tighter estimates, higher confidence  |
 | Normal | Typical market conditions       | Standard behavior                     |
 | High   | Elevated or stressed volatility | Wider uncertainty, confidence penalty |
-|        | endtable                        |                                       |
 
 <Warning>
   High volatility regimes explicitly reduce confidence, even when raw probabilities appear attractive.
@@ -75,8 +47,6 @@ Core principles:
 
 The aggregation step produces both a probability and a model-consensus signal.
 
----
-
 ## Contextual Adjustments
 
 After aggregation, the estimate is adjusted using market context signals.
@@ -91,8 +61,6 @@ These adjustments account for:
   Adjustments are intentionally conservative and designed to dampen crowd-driven overconfidence.
 </Note>
 
----
-
 ## Probability Bounding
 
 The engine never outputs absolute certainty.
@@ -104,8 +72,6 @@ Probability bounds are applied based on:
 - Detected volatility regime
 
 This ensures outputs remain probabilistic rather than declarative.
-
----
 
 ## Output Structure
 
@@ -128,20 +94,6 @@ This ensures outputs remain probabilistic rather than declarative.
 <ResponseField name="recommendation" type="Human-readable probability classification">
   A categorical label derived from the probability range, intended for fast scanning and UI display.
 </ResponseField>
-
----
-
-## Recommendation Labels
-
-| Probability Range | Label      |
-| :---------------- | :--------- |
-| High              | LIKELY YES |
-| Medium-High       | LEAN YES   |
-| Neutral           | TOSS-UP    |
-| Medium-Low        | LEAN NO    |
-| Low               | LIKELY NO  |
-
----
 
 ## Intended Use
 
