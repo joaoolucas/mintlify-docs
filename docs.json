@@ -27,8 +27,8 @@
       {
         "group": "Polystrat",
         "pages": [
-          "polystrat/fees",
-          "polystrat/referral"
+          "polystrat/referral-program",
+          "polystrat/fees"
         ]
       }
     ]
