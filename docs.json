@@ -23,6 +23,13 @@
           "features/hedge",
           "features/model"
         ]
+      },
+      {
+        "group": "Polystrat",
+        "pages": [
+          "polystrat/fee",
+          "polystrat/referral"
+        ]
       }
     ]
   },
